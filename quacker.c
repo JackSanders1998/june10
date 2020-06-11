@@ -169,54 +169,9 @@ int getEntry(int lastEntry, topicEntry *recent, int id) {
 }
 
 void *publisher(void *args) {
-    int bid, tid; // buffer id and thread id
-    int randomnum;  // random number
-
-    tid = ((struct threadargs *) args)->id;
-    fprintf(stdout, "publisher thread id = %d, %ld\n", tid, pthread_self());
-
-    while(TRUE) {
-      for (bid = 0; bid < NUMBUFFERS; bid++) {
-        pthread_mutex_lock(&(mutex[bid]));
-        if (enqueue(bid, topicEntry) == -1) {
-          fprintf(stdout, "publisher %d: buffer %d is full, inserted = %d\n", tid, bid, buffers[bid].inserted);
-          pthread_mutex_unlock(&(mutex[bid]));
-          sleep(1);
-        }
-        else {
-          pthread_mutex_unlock(&(mutex[bid]));
-        }
-      }
-    }
-
-  return 0;
-
 }
 
 void *subscriber(void *args) {
-
-  int bid, tid; // buffer id and thread id
-    int randomnum;  // random number
-  
-    tid = ((struct threadargs *) args)->id;
-    fprintf(stdout, "subscriber thread id = %d, %ld\n", tid, pthread_self());
-  
-    while(TRUE) {
-    
-    for (bid=0; bid<NUMBUFFERS; bid++) {
-      pthread_mutex_lock(&(mutex[bid]));
-
-      if (dequeue(bid, delta) == -1) {
-        fprintf(stdout, "subscriber %d: buffer %d is empty, inserted = %d\n", tid, bid, buffers[bid].inserted);
-        pthread_mutex_unlock(&(mutex[bid]));
-        sleep(1);
-      }
-      else {
-        pthread_mutex_unlock(&(mutex[bid]));
-      }
-    }
-  }
-
 }
 
 // -------------------------------------------------------- //
